@@ -4,9 +4,6 @@ author: BuzzLight3ar
 
 tasks:
 
-  # -------------------------
-  # Folder Structure
-  # -------------------------
   - action: create_dir
     path: resources/[core]
 
@@ -19,9 +16,6 @@ tasks:
   - action: create_dir
     path: resources/[eup]
 
-  # -------------------------
-  # Core Dependencies
-  # -------------------------
   - action: download_github
     src: https://github.com/overextended/ox_lib
     dest: resources/[standalone]/ox_lib
@@ -42,9 +36,6 @@ tasks:
     src: https://github.com/AvarianKnight/pma-voice
     dest: resources/[standalone]/pma-voice
 
-  # -------------------------
-  # QBCore Base
-  # -------------------------
   - action: download_github
     src: https://github.com/qbcore-framework/qb-core
     dest: resources/[qb]/qb-core
@@ -65,9 +56,6 @@ tasks:
     src: https://github.com/qbcore-framework/qb-weapons
     dest: resources/[qb]/qb-weapons
 
-  # -------------------------
-  # QBCore Essentials
-  # -------------------------
   - action: download_github
     src: https://github.com/qbcore-framework/qb-policejob
     dest: resources/[qb]/qb-policejob
@@ -104,9 +92,6 @@ tasks:
     src: https://github.com/qbcore-framework/qb-radialmenu
     dest: resources/[qb]/qb-radialmenu
 
-  # -------------------------
-  # Appearance / EUP
-  # -------------------------
   - action: download_github
     src: https://github.com/iLLeniumStudios/illenium-appearance
     dest: resources/[standalone]/illenium-appearance
@@ -123,9 +108,6 @@ tasks:
     src: https://github.com/Project-Sloth/eup-pack
     dest: resources/[eup]/eup-pack
 
-  # -------------------------
-  # SQL Imports
-  # -------------------------
   - action: run_sql
     file: resources/[qb]/qb-core/sql/qbcore.sql
 
@@ -135,21 +117,14 @@ tasks:
   - action: run_sql
     file: resources/[qb]/qb-apartments/sql/apartments.sql
 
-  # -------------------------
-  # EUP F6 Keybind
-  # -------------------------
   - action: append_file
     path: resources/[eup]/eup-ui/client/eup_keybind.lua
     data: |
       RegisterCommand('eup', function()
           TriggerEvent('eup-ui:open')
       end)
-
       RegisterKeyMapping('eup', 'Open EUP Menu', 'keyboard', 'F6')
 
-  # -------------------------
-  # server.cfg
-  # -------------------------
   - action: write_file
     path: server.cfg
     data: |
