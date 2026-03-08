@@ -66,7 +66,7 @@ tasks:
     dest: resources/[qb]/qb-weapons
 
   # -------------------------
-  # QBCore Essentials (Option B)
+  # QBCore Essentials
   # -------------------------
   - action: download_github
     src: https://github.com/qbcore-framework/qb-policejob
@@ -108,12 +108,12 @@ tasks:
   # Appearance / EUP
   # -------------------------
   - action: download_github
-    src: https://github.com/qbcore-framework/fivem-appearance
-    dest: resources/[standalone]/fivem-appearance
-
-  - action: download_github
     src: https://github.com/iLLeniumStudios/illenium-appearance
     dest: resources/[standalone]/illenium-appearance
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/fivem-appearance
+    dest: resources/[standalone]/fivem-appearance
 
   - action: download_github
     src: https://github.com/Project-Sloth/eup-ui
@@ -139,7 +139,7 @@ tasks:
   # EUP F6 Keybind
   # -------------------------
   - action: append_file
-    path: resources/[eup]/eup-ui/client/keybind.lua
+    path: resources/[eup]/eup-ui/client/eup_keybind.lua
     data: |
       RegisterCommand('eup', function()
           TriggerEvent('eup-ui:open')
@@ -153,30 +153,21 @@ tasks:
   - action: write_file
     path: server.cfg
     data: |
-      # Server Info
       sv_hostname "SpaceGamingCommunityRP"
       sv_maxclients 48
       sv_enforceGameBuild 2944
 
-      # Endpoints
       endpoint_add_tcp "0.0.0.0:30120"
       endpoint_add_udp "0.0.0.0:30120"
 
-      # Database
       set mysql_connection_string "mysql://root@localhost/spacegaming?charset=utf8mb4"
 
-      # OX Inventory Framework
       setr inventory:framework "qb"
+      setr qb-inventory:enable false
 
-      # Voice
-      ensure pma-voice
-
-      # Core
       ensure ox_lib
       ensure oxmysql
       ensure qb-core
-
-      # QBCore Essentials
       ensure qb-smallresources
       ensure qb-multicharacter
       ensure qb-apartments
@@ -191,19 +182,17 @@ tasks:
       ensure qb-emotes
       ensure qb-radialmenu
 
-      # OX Suite
       ensure ox_target
       ensure ox_inventory
 
-      # Appearance / EUP
-      ensure fivem-appearance
       ensure illenium-appearance
+      ensure fivem-appearance
       ensure eup-ui
       ensure eup-pack
 
-      # Permissions
+      ensure pma-voice
+
       add_ace group.admin command allow
       add_principal identifier.steam:YOURSTEAMHEXHERE group.admin
 
-      # License Key
       sv_licenseKey "REPLACE_ME"
