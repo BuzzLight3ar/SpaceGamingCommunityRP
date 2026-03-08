@@ -1,0 +1,178 @@
+name: "Buzz QBCore EUP Server"
+version: "1.0.0"
+
+tasks:
+
+  # -------------------------
+  # Folder Structure
+  # -------------------------
+  - action: create_dir
+    path: ./resources/[core]
+
+  - action: create_dir
+    path: ./resources/[qb]
+
+  - action: create_dir
+    path: ./resources/[standalone]
+
+  - action: create_dir
+    path: ./resources/[eup]
+
+  # -------------------------
+  # QBCore Base
+  # -------------------------
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-core
+    ref: main
+    dest: ./resources/[core]/qb-core
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-smallresources
+    ref: main
+    dest: ./resources/[qb]/qb-smallresources
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-multicharacter
+    ref: main
+    dest: ./resources/[qb]/qb-multicharacter
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-apartments
+    ref: main
+    dest: ./resources/[qb]/qb-apartments
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-weapons
+    ref: main
+    dest: ./resources/[qb]/qb-weapons
+
+  # -------------------------
+  # OX Dependencies
+  # -------------------------
+  - action: download_github
+    src: https://github.com/overextended/ox_lib
+    ref: main
+    dest: ./resources/[standalone]/ox_lib
+
+  - action: download_github
+    src: https://github.com/overextended/ox_target
+    ref: main
+    dest: ./resources/[standalone]/ox_target
+
+  - action: download_github
+    src: https://github.com/overextended/ox_inventory
+    ref: main
+    dest: ./resources/[standalone]/ox_inventory
+
+  - action: download_github
+    src: https://github.com/overextended/oxmysql
+    ref: main
+    dest: ./resources/[standalone]/oxmysql
+
+  # -------------------------
+  # Voice
+  # -------------------------
+  - action: download_github
+    src: https://github.com/AvarianKnight/pma-voice
+    ref: main
+    dest: ./resources/[standalone]/pma-voice
+
+  # -------------------------
+  # Appearance System
+  # -------------------------
+  - action: download_github
+    src: https://github.com/iLLeniumStudios/fivem-appearance
+    ref: main
+    dest: ./resources/[standalone]/fivem-appearance
+
+  - action: download_github
+    src: https://github.com/iLLeniumStudios/illenium-appearance
+    ref: main
+    dest: ./resources/[standalone]/illenium-appearance
+
+  # -------------------------
+  # EUP
+  # -------------------------
+  - action: download_github
+    src: https://github.com/Native-Software/eup-ui
+    ref: main
+    dest: ./resources/[eup]/eup-ui
+
+  - action: download_github
+    src: https://github.com/Native-Software/eup-pack
+    ref: main
+    dest: ./resources/[eup]/eup-pack
+
+  # -------------------------
+  # SQL Imports
+  # -------------------------
+  - action: run_sql
+    file: ./resources/[core]/qb-core/sql/qbcore.sql
+
+  - action: run_sql
+    file: ./resources/[qb]/qb-multicharacter/sql/multicharacter.sql
+
+  - action: run_sql
+    file: ./resources/[qb]/qb-apartments/sql/apartments.sql
+
+  # -------------------------
+  # EUP F6 Keybind
+  # -------------------------
+  - action: write_file
+    path: ./resources/[eup]/eup-ui/client/keybind.lua
+    data: |
+      RegisterCommand('eup', function()
+          TriggerEvent('eup-ui:open')
+      end)
+
+      RegisterKeyMapping('eup', 'Open EUP Menu', 'keyboard', 'F6')
+
+  # -------------------------
+  # Server CFG
+  # -------------------------
+  - action: write_file
+    path: ./server.cfg
+    data: |
+      sv_hostname "Buzz QBCore EUP Server"
+      sv_maxclients 48
+
+      # License Key (fill in manually)
+      sv_licenseKey ""
+
+      # -------------------------
+      # Core
+      # -------------------------
+      ensure oxmysql
+      ensure qb-core
+      ensure qb-smallresources
+      ensure qb-multicharacter
+      ensure qb-apartments
+      ensure qb-weapons
+
+      # -------------------------
+      # OX
+      # -------------------------
+      ensure ox_lib
+      ensure ox_target
+      ensure ox_inventory
+
+      set inventory:framework "qb"
+      setr ox:locale "en"
+
+      # -------------------------
+      # Appearance
+      # -------------------------
+      ensure fivem-appearance
+      ensure illenium-appearance
+
+      # -------------------------
+      # EUP
+      # -------------------------
+      setr eup-streaming 1
+      setr eup-ui:enable 1
+      ensure eup-ui
+      ensure eup-pack
+
+      # -------------------------
+      # Voice
+      # ----------------
