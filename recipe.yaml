@@ -24,4 +24,186 @@ tasks:
   # -------------------------
   - action: download_github
     src: https://github.com/overextended/ox_lib
-    dest: resources/[stand
+    dest: resources/[standalone]/ox_lib
+
+  - action: download_github
+    src: https://github.com/overextended/ox_target
+    dest: resources/[standalone]/ox_target
+
+  - action: download_github
+    src: https://github.com/overextended/ox_inventory
+    dest: resources/[standalone]/ox_inventory
+
+  - action: download_github
+    src: https://github.com/overextended/oxmysql
+    dest: resources/[standalone]/oxmysql
+
+  - action: download_github
+    src: https://github.com/AvarianKnight/pma-voice
+    dest: resources/[standalone]/pma-voice
+
+  # -------------------------
+  # QBCore Base
+  # -------------------------
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-core
+    dest: resources/[qb]/qb-core
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-smallresources
+    dest: resources/[qb]/qb-smallresources
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-multicharacter
+    dest: resources/[qb]/qb-multicharacter
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-apartments
+    dest: resources/[qb]/qb-apartments
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-weapons
+    dest: resources/[qb]/qb-weapons
+
+  # -------------------------
+  # QBCore Essentials (Option B)
+  # -------------------------
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-policejob
+    dest: resources/[qb]/qb-policejob
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-ambulancejob
+    dest: resources/[qb]/qb-ambulancejob
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-garages
+    dest: resources/[qb]/qb-garages
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-vehicleshop
+    dest: resources/[qb]/qb-vehicleshop
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-phone
+    dest: resources/[qb]/qb-phone
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-hud
+    dest: resources/[qb]/qb-hud
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-management
+    dest: resources/[qb]/qb-management
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-emotes
+    dest: resources/[qb]/qb-emotes
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-radialmenu
+    dest: resources/[qb]/qb-radialmenu
+
+  # -------------------------
+  # Appearance / EUP
+  # -------------------------
+  - action: download_github
+    src: https://github.com/qbcore-framework/fivem-appearance
+    dest: resources/[standalone]/fivem-appearance
+
+  - action: download_github
+    src: https://github.com/iLLeniumStudios/illenium-appearance
+    dest: resources/[standalone]/illenium-appearance
+
+  - action: download_github
+    src: https://github.com/Project-Sloth/eup-ui
+    dest: resources/[eup]/eup-ui
+
+  - action: download_github
+    src: https://github.com/Project-Sloth/eup-pack
+    dest: resources/[eup]/eup-pack
+
+  # -------------------------
+  # SQL Imports
+  # -------------------------
+  - action: run_sql
+    file: resources/[qb]/qb-core/sql/qbcore.sql
+
+  - action: run_sql
+    file: resources/[qb]/qb-multicharacter/sql/multicharacter.sql
+
+  - action: run_sql
+    file: resources/[qb]/qb-apartments/sql/apartments.sql
+
+  # -------------------------
+  # EUP F6 Keybind
+  # -------------------------
+  - action: append_file
+    path: resources/[eup]/eup-ui/client/keybind.lua
+    data: |
+      RegisterCommand('eup', function()
+          TriggerEvent('eup-ui:open')
+      end)
+
+      RegisterKeyMapping('eup', 'Open EUP Menu', 'keyboard', 'F6')
+
+  # -------------------------
+  # server.cfg
+  # -------------------------
+  - action: write_file
+    path: server.cfg
+    data: |
+      # Server Info
+      sv_hostname "SpaceGamingCommunityRP"
+      sv_maxclients 48
+      sv_enforceGameBuild 2944
+
+      # Endpoints
+      endpoint_add_tcp "0.0.0.0:30120"
+      endpoint_add_udp "0.0.0.0:30120"
+
+      # Database
+      set mysql_connection_string "mysql://root@localhost/spacegaming?charset=utf8mb4"
+
+      # OX Inventory Framework
+      setr inventory:framework "qb"
+
+      # Voice
+      ensure pma-voice
+
+      # Core
+      ensure ox_lib
+      ensure oxmysql
+      ensure qb-core
+
+      # QBCore Essentials
+      ensure qb-smallresources
+      ensure qb-multicharacter
+      ensure qb-apartments
+      ensure qb-weapons
+      ensure qb-policejob
+      ensure qb-ambulancejob
+      ensure qb-garages
+      ensure qb-vehicleshop
+      ensure qb-phone
+      ensure qb-hud
+      ensure qb-management
+      ensure qb-emotes
+      ensure qb-radialmenu
+
+      # OX Suite
+      ensure ox_target
+      ensure ox_inventory
+
+      # Appearance / EUP
+      ensure fivem-appearance
+      ensure illenium-appearance
+      ensure eup-ui
+      ensure eup-pack
+
+      # Permissions
+      add_ace group.admin command allow
+      add_principal identifier.steam:YOURSTEAMHEXHERE group.admin
+
+      # License Key
+      sv_licenseKey "REPLACE_ME"
