@@ -7,8 +7,18 @@ tasks:
     ref: main
     dest: ./resources/eup-ui
 
+  - action: download_github
+    src: https://github.com/Native-Software/eup-pack
+    ref: main
+    dest: ./resources/eup-pack
+
   - action: write_file
     path: ./server.cfg
     data: |
       sv_hostname "Buzz EUP Server"
+      sv_maxclients 48
+
       ensure eup-ui
+      ensure eup-pack
+
+      sv_licenseKey "CHANGE_ME"
