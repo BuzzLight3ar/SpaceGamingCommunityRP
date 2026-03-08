@@ -1,21 +1,17 @@
-name: "QBCore + EUP + Appearance + URP Base"
-version: "2.0.0"
+name: "Buzz QBCore Server"
+version: "1.0.0"
 author: "Buzz"
 
 tasks:
-  # Base folders
+  # Create base folders
   - action: create_dir
     path: ./resources
   - action: create_dir
     path: ./resources/[qb]
   - action: create_dir
     path: ./resources/[standalone]
-  - action: create_dir
-    path: ./resources/[eup]
-  - action: create_dir
-    path: ./resources/[urp]
 
-  # QBCore Framework
+  # Download QBCore
   - action: download_github
     src: https://github.com/qbcore-framework/qb-core
     ref: main
@@ -26,88 +22,36 @@ tasks:
     ref: main
     dest: ./resources/[qb]/qb-smallresources
 
-  # ox_lib (required for qb-appearance)
+  # ox_lib (required for many scripts)
   - action: download_github
     src: https://github.com/overextended/ox_lib
     ref: main
     dest: ./resources/[standalone]/ox_lib
 
-  # qb-appearance + dependencies
-  - action: download_github
-    src: https://github.com/qbcore-framework/qb-clothing
-    ref: main
-    dest: ./resources/[qb]/qb-clothing
-
-  - action: download_github
-    src: https://github.com/qbcore-framework/qb-appearance
-    ref: main
-    dest: ./resources/[qb]/qb-appearance
-
-  # EUP Menu
-  - action: download_github
-    src: https://github.com/Native-Software/eup-ui
-    ref: main
-    dest: ./resources/[eup]/eup-ui
-
-  # EUP Packs (example placeholders)
-  - action: download_github
-    src: https://github.com/Native-Software/eup-pack
-    ref: main
-    dest: ./resources/[eup]/eup-pack
-
-  # URP Base (your custom framework)
-  - action: download_github
-    src: https://github.com/yourgithub/urp-base
-    ref: main
-    dest: ./resources/[urp]/urp-base
-
-  # server.cfg
+  # Server.cfg
   - action: write_file
     path: ./server.cfg
     data: |
-      ##############################################
-      # SERVER INFO
-      ##############################################
-      sv_hostname "Buzz QBCore + EUP Server"
+      sv_hostname "Buzz QBCore Server"
       sv_maxclients 48
-      sets locale "en-US"
 
-      ##############################################
-      # DATABASE
-      ##############################################
+      # Database
       set mysql_connection_string "mysql://root:password@127.0.0.1/qbcore?charset=utf8mb4"
 
-      ##############################################
-      # RESOURCES
-      ##############################################
+      # Resources
       ensure ox_lib
       ensure qb-core
       ensure qb-smallresources
 
-      # Appearance
-      ensure qb-clothing
-      ensure qb-appearance
-
-      # EUP
-      ensure eup-ui
-      ensure eup-pack
-
-      # URP Base
-      ensure urp-base
-
-      ##############################################
-      # PERMISSIONS
-      ##############################################
+      # Permissions
       add_ace group.admin command allow
       add_principal identifier.fivem:YOUR_FIVEM_ID group.admin
 
-      ##############################################
-      # LICENSES
-      ##############################################
+      # License
       sv_licenseKey "CHANGE_ME"
-      sv_tebexSecret ""
 
-  # SQL Import
+  # Import QBCore SQL
   - action: run_sql
     file: ./resources/[qb]/qb-core/sql/qbcore.sql
+
 
