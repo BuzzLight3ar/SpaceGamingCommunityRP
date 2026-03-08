@@ -1,27 +1,14 @@
-name: "Buzz EUP Server"
+name: "Buzz Test Recipe"
 version: "1.0.0"
 
 tasks:
-  # Download EUP Menu
   - action: download_github
     src: https://github.com/Native-Software/eup-ui
     ref: main
     dest: ./resources/eup-ui
 
-  # Download EUP Pack (placeholder)
-  - action: download_github
-    src: https://github.com/Native-Software/eup-pack
-    ref: main
-    dest: ./resources/eup-pack
-
-  # Write server.cfg
   - action: write_file
     path: ./server.cfg
     data: |
-      sv_hostname "Buzz EUP Server"
-      sv_maxclients 48
-
+      sv_hostname "Buzz Test Server"
       ensure eup-ui
-      ensure eup-pack
-
-      sv_licenseKey "CHANGE_ME"
