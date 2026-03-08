@@ -1,0 +1,40 @@
+name: "QBCore with EUP Menu"
+version: "1.0.0"
+author: "Buzz"
+
+tasks:
+  # QBCore Base Framework
+  - action: download_github
+    src: https://github.com/qbcore-framework/txAdminRecipe
+    ref: main
+    dest: ./tmp/qbcore
+
+  - action: unzip
+    src: ./tmp/qbcore/qbcore.zip
+    dest: ./
+
+  # ox_lib (required for eup-ui)
+  - action: download_github
+    src: https://github.com/overextended/ox_lib
+    ref: main
+    dest: ./resources/[standalone]/ox_lib
+
+  # eup-ui menu
+  - action: download_github
+    src: https://github.com/ScrachStack/eup-ui
+    ref: main
+    dest: ./resources/[eup]/eup-ui
+
+  # EUP 9.5 Stream (generic placeholder)
+  - action: download_github
+    src: https://github.com/yourusername/eup-9.5
+    ref: main
+    dest: ./resources/[eup]/eup-9.5
+
+  # Add resources to server.cfg
+  - action: append_to_file
+    path: ./server.cfg
+    data: |
+      ensure ox_lib
+      ensure eup-9.5
+      ensure eup-ui
