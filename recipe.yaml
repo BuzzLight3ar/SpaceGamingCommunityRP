@@ -21,4 +21,4 @@ tasks:
       ensure eup-ui
       ensure eup-pack
 
-      sv_licenseKey "CHANGE_ME"
+      sv_licenseKey "cfxk_10zTKuHZGiTGsBHyxuSGj_2OShKa"
