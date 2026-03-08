@@ -1,4 +1,4 @@
-name: "Buzz Test Recipe"
+name: "Buzz EUP Server"
 version: "1.0.0"
 
 tasks:
@@ -10,5 +10,5 @@ tasks:
   - action: write_file
     path: ./server.cfg
     data: |
-      sv_hostname "Buzz Test Server"
+      sv_hostname "Buzz EUP Server"
       ensure eup-ui
