@@ -1,40 +1,113 @@
-name: "QBCore with EUP Menu"
-version: "1.0.0"
+name: "QBCore + EUP + Appearance + URP Base"
+version: "2.0.0"
 author: "Buzz"
 
 tasks:
-  # QBCore Base Framework
+  # Base folders
+  - action: create_dir
+    path: ./resources
+  - action: create_dir
+    path: ./resources/[qb]
+  - action: create_dir
+    path: ./resources/[standalone]
+  - action: create_dir
+    path: ./resources/[eup]
+  - action: create_dir
+    path: ./resources/[urp]
+
+  # QBCore Framework
   - action: download_github
-    src: https://github.com/qbcore-framework/txAdminRecipe
+    src: https://github.com/qbcore-framework/qb-core
     ref: main
-    dest: ./tmp/qbcore
+    dest: ./resources/[qb]/qb-core
 
-  - action: unzip
-    src: ./tmp/qbcore/qbcore.zip
-    dest: ./
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-smallresources
+    ref: main
+    dest: ./resources/[qb]/qb-smallresources
 
-  # ox_lib (required for eup-ui)
+  # ox_lib (required for qb-appearance)
   - action: download_github
     src: https://github.com/overextended/ox_lib
     ref: main
     dest: ./resources/[standalone]/ox_lib
 
-  # eup-ui menu
+  # qb-appearance + dependencies
   - action: download_github
-    src: https://github.com/ScrachStack/eup-ui
+    src: https://github.com/qbcore-framework/qb-clothing
+    ref: main
+    dest: ./resources/[qb]/qb-clothing
+
+  - action: download_github
+    src: https://github.com/qbcore-framework/qb-appearance
+    ref: main
+    dest: ./resources/[qb]/qb-appearance
+
+  # EUP Menu
+  - action: download_github
+    src: https://github.com/Native-Software/eup-ui
     ref: main
     dest: ./resources/[eup]/eup-ui
 
-  # EUP 9.5 Stream (generic placeholder)
+  # EUP Packs (example placeholders)
   - action: download_github
-    src: https://github.com/yourusername/eup-9.5
+    src: https://github.com/Native-Software/eup-pack
     ref: main
-    dest: ./resources/[eup]/eup-9.5
+    dest: ./resources/[eup]/eup-pack
 
-  # Add resources to server.cfg
-  - action: append_to_file
+  # URP Base (your custom framework)
+  - action: download_github
+    src: https://github.com/yourgithub/urp-base
+    ref: main
+    dest: ./resources/[urp]/urp-base
+
+  # server.cfg
+  - action: write_file
     path: ./server.cfg
     data: |
+      ##############################################
+      # SERVER INFO
+      ##############################################
+      sv_hostname "Buzz QBCore + EUP Server"
+      sv_maxclients 48
+      sets locale "en-US"
+
+      ##############################################
+      # DATABASE
+      ##############################################
+      set mysql_connection_string "mysql://root:password@127.0.0.1/qbcore?charset=utf8mb4"
+
+      ##############################################
+      # RESOURCES
+      ##############################################
       ensure ox_lib
-      ensure eup-9.5
+      ensure qb-core
+      ensure qb-smallresources
+
+      # Appearance
+      ensure qb-clothing
+      ensure qb-appearance
+
+      # EUP
       ensure eup-ui
+      ensure eup-pack
+
+      # URP Base
+      ensure urp-base
+
+      ##############################################
+      # PERMISSIONS
+      ##############################################
+      add_ace group.admin command allow
+      add_principal identifier.fivem:YOUR_FIVEM_ID group.admin
+
+      ##############################################
+      # LICENSES
+      ##############################################
+      sv_licenseKey "CHANGE_ME"
+      sv_tebexSecret ""
+
+  # SQL Import
+  - action: run_sql
+    file: ./resources/[qb]/qb-core/sql/qbcore.sql
+
